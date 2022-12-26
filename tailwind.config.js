@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: ".2rem",
+      padding: "1rem",
     },
     extend: {
       fontFamily: {
@@ -18,7 +18,8 @@ module.exports = {
         dark: "#141414",
         black: "#000000",
         gray: "#333333",
-        "light-gray": "#8C8C8C",
+        orange: "#e87c03",
+        "light-gray": "#8b8b8b",
         red: "#e50914",
       },
     },
