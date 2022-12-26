@@ -47,7 +47,7 @@ function Banner({
     >
       <div className="banner_fadeTop absolute top-0 left-0 h-40 w-full bg-gradient-to-b from-black to-transparent" />
 
-      <div class="container">
+      <div className="container">
         <div className="w-1/2 h-full items-center flex justify-start">
           <div className="flex flex-col">
             <h1 className="text-6xl font-medium text-white">
@@ -94,20 +94,20 @@ function Banner({
                   className="ml-1"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M8.61719 2.09517C5.00223 2.09517 2.07173 5.02567 2.07173 8.64063C2.07173 12.2556 5.00223 15.1861 8.61719 15.1861C12.2321 15.1861 15.1626 12.2556 15.1626 8.64063C15.1626 5.02567 12.2321 2.09517 8.61719 2.09517ZM0.617188 8.64063C0.617188 4.22235 4.19891 0.640625 8.61719 0.640625C13.0355 0.640625 16.6172 4.22235 16.6172 8.64063C16.6172 13.0589 13.0355 16.6406 8.61719 16.6406C4.19891 16.6406 0.617188 13.0589 0.617188 8.64063Z"
                     fill="white"
                   />
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M8.61719 7.64062C9.16947 7.64062 9.61719 8.01372 9.61719 8.47396V11.8073C9.61719 12.2675 9.16947 12.6406 8.61719 12.6406C8.0649 12.6406 7.61719 12.2675 7.61719 11.8073V8.47396C7.61719 8.01372 8.0649 7.64062 8.61719 7.64062Z"
                     fill="white"
                   />
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M7.61719 5.64062C7.61719 5.08834 8.06268 4.64062 8.61221 4.64062H8.62216C9.1717 4.64062 9.61719 5.08834 9.61719 5.64062C9.61719 6.19291 9.1717 6.64062 8.62216 6.64062H8.61221C8.06268 6.64062 7.61719 6.19291 7.61719 5.64062Z"
                     fill="white"
                   />

@@ -10,8 +10,9 @@ const POSTER_SIZES = {
 };
 
 function Row(props) {
-  const { type, endpoint, setSelectedTitle } = props;
+  const { endpoint, setSelectedTitle } = props;
 
+  console.log('endpoint', endpoint)
   const [movies, setMovies] = useState([]);
   const [fetchStatus, setFetchStatus] = useState("idle");
 

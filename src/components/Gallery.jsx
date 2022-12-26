@@ -14,7 +14,6 @@ function Gallery({ setSelectedTitle, layout }) {
             <Row
               key={i}
               endpoint={endpoint}
-              type={type}
               setSelectedTitle={setSelectedTitle}
             />
           )

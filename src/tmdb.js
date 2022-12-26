@@ -9,12 +9,12 @@ const endpoints = {
     {
       genre: "Trending",
       title: "Trending",
-      url: `/trending/all/week?api_key=${API_KEY}&language=en-US`,
+      url: `/trending/movie/week?api_key=${API_KEY}&language=en-US`,
     },
     {
       genre: "NetflixOriginals",
       title: "Netflix Originals",
-      url: `/discover/tv?api_key=${API_KEY}&with_networks=213`,
+      url: `/discover/movie?api_key=${API_KEY}&with_networks=213`,
       orientation: "vertical",
     },
     {
@@ -52,7 +52,7 @@ const endpoints = {
     {
       genre: "Trending",
       title: "Trending",
-      url: `/trending/all/week?api_key=${API_KEY}&language=en-US`,
+      url: `/trending/tv/week?api_key=${API_KEY}&language=en-US`,
     },
     {
       genre: "NetflixOriginals",

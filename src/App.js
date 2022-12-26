@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
-import Home from "./routes/home";
-import Login from "./routes/login";
+import React, { useEffect, useState } from "react";
+import Logo from "./images/logo.svg";
+import Home  from "./routes/home";
+import Landing from "./routes/landing";
+import Profile from "./routes/profile";
 import { authentication } from "./firebase";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   useNavigate,
-  useParams,
 } from "react-router-dom";
 
 import { logout, login, selectUser } from "./features/userSlice";
@@ -15,21 +16,24 @@ import { useDispatch, useSelector } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
-
-  // Redirect to the /home page if user is logged in
   const navigate = useNavigate();
+  const [ loadState, setLoadState ] = useState(1);
 
+  // Redirect to home if user is logged in and is on root
   useEffect(() => {
     const unsubscribe = authentication.onAuthStateChanged((user) => {
       if (window.location.pathname === "/" && user) {
         navigate("/home");
       }
     });
+
+    return () => unsubscribe;
   }, [navigate]);
 
   // Get user from redux store
   const user = useSelector(selectUser);
 
+  // Listen to auth state changes
   useEffect(() => {
     const unsubscribe = authentication.onAuthStateChanged((user) => {
       if (user) {
@@ -42,31 +46,34 @@ function App() {
         );
       } else {
         console.log("user logged out", user);
-        dispatch(logout);
+        dispatch(logout());
+        navigate('/')
       }
+
+      setLoadState('completed');
     });
 
-    // Always use cleanup
+    // Always cleanup
     return () => unsubscribe;
-  }, []);
-
-  function CategoryDetails() {
-    let { id } = useParams();
-    return <>{/* Render the details for the category with ID `id` here */}</>;
-  }
+  }, [dispatch]);
 
   return (
-    <div className="App bg-dark overflow-hidden">
+    <div className="App bg-dark h-screen overflow-hidden">
+      { loadState !== 'completed' && 
+      
+        <div className="absolute h-screen w-screen z-40 bg-dark flex justify-center items-center">
+          <img src={Logo} alt="Netflix Logo" className="w-48" />
+        </div>
+      }
       {!user ? (
-        <Login />
+        <Landing />
       ) : (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route exact path="/home" element={<Home />} />
           <Route path="/home/:category" element={<Home />} />
-
-          <Route path="/test" element={<div>test page</div>} />
-          <Route path="/profile" element={<div>profile page</div>} />
+          <Route path="/my-list" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<div>Add 404</div>} />
         </Routes>
       )}
