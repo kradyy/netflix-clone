@@ -1,19 +1,23 @@
 import Row from "./Row";
+import { endpoints } from "../tmdb";
 
-function Gallery({ setSelectedTitle, setActiveMovie }) {
-  const rows = [];
+function Gallery({ setSelectedTitle, layout }) {
+  const { type, genres } = layout;
 
   return (
-    <div className="rows mt-10">
-      {rows.map((row) => {
+    <div className="container overflow-visible z-10 relative rows -mt-10">
+      {genres.map((genre, i) => {
+        let endpoint = endpoints[type].find((item) => item.genre === genre);
+
         return (
-          <Row
-            key={row.title}
-            title={row.title}
-            endpoint={row.endpoint}
-            orientation={row.orientation}
-            setSelectedTitle={setSelectedTitle}
-          />
+          endpoint && (
+            <Row
+              key={i}
+              endpoint={endpoint}
+              type={type}
+              setSelectedTitle={setSelectedTitle}
+            />
+          )
         );
       })}
     </div>

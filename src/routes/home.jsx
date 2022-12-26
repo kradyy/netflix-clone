@@ -8,6 +8,20 @@ import { useModal } from "react-morphing-modal";
 import "react-morphing-modal/dist/ReactMorphingModal.css";
 import { useParams } from "react-router-dom";
 
+const DEFAULT_LAYOUT = {
+  type: "movies",
+  genres: [
+    "Trending",
+    "NetflixOriginals",
+    "TopRated",
+    "Action",
+    "Comedy",
+    "Horror",
+    "Romance",
+    "Documentaries",
+  ],
+};
+
 function Home() {
   const [selectedTitle, setSelectedTitle] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -23,7 +37,7 @@ function Home() {
   }
 
   return (
-    <div className="bg-dark relative">
+    <div className="relative">
       <Navbar />
       <Banner
         setSelectedTitle={setSelectedTitle}
@@ -31,7 +45,7 @@ function Home() {
         setActiveMovie={setActiveMovie}
         openVideoModal={open}
       />
-      <Gallery setSelectedTitle={setSelectedTitle} />
+      <Gallery setSelectedTitle={setSelectedTitle} layout={DEFAULT_LAYOUT} />
       <Player modalProps={modalProps} activeMovie={activeMovie} />
     </div>
   );

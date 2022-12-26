@@ -19,8 +19,6 @@ function App() {
   // Redirect to the /home page if user is logged in
   const navigate = useNavigate();
 
-  alert("todo: fixa hämtning av gallerier + fixa menylänkarna");
-
   useEffect(() => {
     const unsubscribe = authentication.onAuthStateChanged((user) => {
       if (window.location.pathname === "/" && user) {
@@ -58,7 +56,7 @@ function App() {
   }
 
   return (
-    <div className="overflow-hidden">
+    <div className="App bg-dark overflow-hidden">
       {!user ? (
         <Login />
       ) : (

@@ -4,21 +4,24 @@ import { basePath } from "../tmdb";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
+const POSTER_SIZES = {
+  vertical: "256px",
+  horizontal: "156px",
+};
+
 function Row(props) {
-  const { title, endpoint, orientation, setSelectedTitle } = props;
+  const { type, endpoint, setSelectedTitle } = props;
 
   const [movies, setMovies] = useState([]);
   const [fetchStatus, setFetchStatus] = useState("idle");
 
   const posterLayouts = {
     vertical: {
-      class:
-        "row__posters--vertical object-contain rounded w-100 max-h-[256px] transition-all duration-500 hover:scale-[1.09]",
+      class: `row__posters--vertical object-contain rounded w-100 max-h-[${POSTER_SIZES.vertical}] transition-all duration-500 hover:scale-[1.09]`,
       imageType: "poster_path",
     },
     horizontal: {
-      class:
-        "row__posters--horizontal object-contain rounded  w-100 max-h-[156px] transition-all duration-500 hover:scale-[1.11]",
+      class: `row__posters--horizontal object-contain rounded  w-100 max-h-[${POSTER_SIZES.horizontal}] transition-all duration-500 hover:scale-[1.11]`,
       imageType: "backdrop_path",
     },
   };
@@ -28,8 +31,10 @@ function Row(props) {
     setSelectedTitle(movie);
   };
 
-  const posterLayout = Object.keys(posterLayouts).includes(orientation)
-    ? posterLayouts[orientation]
+  const posterLayout = Object.keys(posterLayouts).includes(
+    endpoint?.orientation
+  )
+    ? posterLayouts[endpoint?.orientation]
     : posterLayouts["horizontal"];
 
   const scrollRow = (event, direction) => {
@@ -46,12 +51,13 @@ function Row(props) {
   };
 
   useEffect(() => {
-    if (!endpoint) {
+    if (!endpoint || !endpoint?.url) {
+      setFetchStatus("error");
       return;
     }
 
     instance
-      .get(endpoint)
+      .get(endpoint.url)
       .then((response) => {
         if (response.data) {
           setMovies(response.data.results);
@@ -64,12 +70,19 @@ function Row(props) {
       });
   }, [endpoint]);
 
-  return (
-    <div className="row mb-12 select-none">
-      <h2 className="text-white">{title}</h2>
+  const boxHeight =
+    (endpoint?.orientation && POSTER_SIZES[endpoint.orientation]) || "156px";
 
-      {fetchStatus === "idle" && <p>Loading...</p>}
-      {fetchStatus === "error" && <p>Something went wrong.</p>}
+  return (
+    <div className="row mb-12 select-none -mx-5">
+      <h2 className="text-white px-5">{endpoint?.title}</h2>
+
+      {fetchStatus === "idle" && (
+        <p className="text-white text-center">Loading...</p>
+      )}
+      {fetchStatus === "error" && (
+        <p className="text-white text-center">Something went wrong.</p>
+      )}
 
       {fetchStatus === "done" && (
         <div className="row__posters relative h-full w-full group">
@@ -78,23 +91,31 @@ function Row(props) {
             className="bg-white rounded-full opacity-30 absolute top-[50%] translate-y-[-50%] left-0 hover:opacity-100 cursor-pointer z-30 hidden transition-all duration-500 group-hover:block"
             onClick={(event) => scrollRow(event, "left")}
           />
-          <ScrollContainer className="row_posters__scrollable py-5 overflow-y-hidden overflow-x-scroll e w-100 flex flex-row space-x-2 cursor-pointer relative">
-            {movies.map((movie) => {
-              const image = movie[posterLayout.imageType];
+          <div
+            className="relative w-full w-[120%]"
+            style={{ height: boxHeight }}
+          >
+            <div className="absolute left-0 top-0">
+              <ScrollContainer className="row_posters__scrollable px-5 py-5 overflow-y-hidden overflow-x-visible e w-100 flex flex-row space-x-2 cursor-pointer relative">
+                {movies &&
+                  movies.map((movie) => {
+                    const image = movie[posterLayout.imageType];
 
-              return (
-                <img
-                  key={movie.id}
-                  src={image ? basePath + image : null}
-                  alt={movie.name}
-                  className={posterLayout.class}
-                  onClick={() => updateSelectedTitle(movie)}
-                />
-              );
-            })}
-          </ScrollContainer>
+                    return (
+                      <img
+                        key={movie.id}
+                        src={image ? basePath + image : null}
+                        alt={movie.name}
+                        className={posterLayout.class}
+                        onClick={() => updateSelectedTitle(movie)}
+                      />
+                    );
+                  })}
+              </ScrollContainer>
+            </div>
+          </div>
           <MdChevronRight
-            size={45}
+            size={35}
             className="bg-white rounded-full opacity-30 absolute top-[50%] translate-y-[-50%] right-0 hover:opacity-100 cursor-pointer z-30 hidden transition-all duration-500 group-hover:block"
             onClick={(event) => scrollRow(event, "right")}
           />

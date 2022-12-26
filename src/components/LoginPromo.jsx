@@ -2,8 +2,8 @@ import React from "react";
 
 function LoginPromo({ setLoginState }) {
   return (
-    <div className="promo container fixed h-screen z-10 top-0 flex items-center">
-      <div className="promo_inner">
+    <div className="promo w-full fixed h-screen z-10 top-0 flex items-center">
+      <div className="container promo_inner">
         <h1 className="text-6xl text-white my-4 font-medium">
           See what's next.
         </h1>

@@ -11,10 +11,10 @@ function Navbar() {
 
   return (
     <nav className="absolute z-10 top-0 left-0 h-20 w-full">
-      <div className="flex items-center justify-between px-4 py-4">
+      <div className="container flex items-center justify-between py-4">
         <div className="flex items-center">
           <img src={Logo} alt="Netflix Logo" className="w-30" />
-          <ul className="flex items-center space-x-6 ml-10">
+          <ul className="flex items-center space-x-9 ml-10">
             <li>
               <a
                 href="/home/shows"
@@ -86,17 +86,4 @@ function Navbar() {
     </nav>
   );
 }
-
-/*
-    <YoutubeBackground
-      className="yt"
-      videoId={"_YzD9KW82sk"} 
-      playerOptions={{ mute: 1, loop: 8, autoplay: 0 }}
-    >
-      <div className="App">
-        <div></div>
-      </div>
-    </YoutubeBackground>
-    */
-
 export default Navbar;
