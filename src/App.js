@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import Logo from "./images/logo.svg";
 import Home  from "./routes/home";
 import Landing from "./routes/landing";
+import NotFound from "./routes/404";
 import Profile from "./routes/profile";
+import Login from "./routes/login";
+import Signup from "./routes/signup";
 import { authentication } from "./firebase";
 import {
   BrowserRouter as Router,
@@ -45,9 +48,12 @@ function App() {
           })
         );
       } else {
-        console.log("user logged out", user);
         dispatch(logout());
-        navigate('/')
+
+        // Redirect to root if user is not logged in
+        if ([ '/signup', '/profile' ].includes(window.location.pathname)) {
+
+        }
       }
 
       setLoadState('completed');
@@ -65,18 +71,25 @@ function App() {
           <img src={Logo} alt="Netflix Logo" className="w-48" />
         </div>
       }
-      {!user ? (
-        <Landing />
-      ) : (
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route exact path="/home" element={<Home />} />
-          <Route path="/home/:category" element={<Home />} />
-          <Route path="/my-list" element={<Profile />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<div>Add 404</div>} />
-        </Routes>
-      )}
+        
+    
+          <Routes>
+          { !user ?
+            <>
+              <Route path="/" element={<Landing />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+            </>
+          :
+          <>
+            <Route path="/" element={<Home />} />
+            <Route exact path="/home" element={<Home />} />
+            <Route path="/home/:category" element={<Home />} />
+            <Route path="/my-list" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} />
+          </> }
+          <Route path="*" element={<NotFound />} />
+          </Routes>
     </div>
   );
 }
