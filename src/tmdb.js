@@ -90,7 +90,12 @@ const endpoints = {
       title: "Documentaries",
       url: `/discover/tv?api_key=${API_KEY}&with_genres=99`,
     },
-  ],
+  ]
 };
 
-export { API_VERSION, API_URL, basePath, endpoints };
+const genreEndpoints = {
+  movies: `/genre/movie/list?api_key=${API_KEY}&language=en-US`,
+  shows: `/genre/tv/list?api_key=${API_KEY}&language=en-US`,
+}
+
+export { API_VERSION, API_URL, basePath, API_KEY, endpoints, genreEndpoints };

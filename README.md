@@ -2,7 +2,7 @@
 
 Netflix clone that uses the TMDB API to fetch movies and tv shows. It also uses the Youtube API to fetch trailers for the movies and tv shows. 🚀
 
-Hobby project for advancing my React skills, added my own twist to certain elements but overall tried to mimic the Netflix UI as much as possible.
+Hobby project for advancing my React skills and my first real React project, added my own twist to certain elements but overall tried to mimic the Netflix UI as much as possible.
 
 Bootstrapped with create-react-app and tailwindcss.
 
@@ -36,7 +36,7 @@ REACT_APP_FIREBASE_ID=
 
 ## Using 🧰
 
-- React (Router, Context, Hooks, etc.)
+- React (Router, Context, Hooks, Axios etc.)
 - Tailwind CSS (with JIT)
 - Firebase (Auth, Firestore, Hosting)
 - TMDB API (The Movie Database)
