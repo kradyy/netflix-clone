@@ -1,47 +1,19 @@
 import { useEffect, useState } from "react";
-import instance from "../axios";
-import { basePath } from "../tmdb";
+import api from "../axios";
+import Card from "./Card";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
-const POSTER_SIZES = {
-  vertical: "256px",
-  horizontal: "156px",
-};
-
 function Row(props) {
-  const { endpoint, setSelectedTitle } = props;
+  const { endpoint, setSelectedTitle, type, modals } = props;
 
-  console.log('endpoint', endpoint)
-  const [movies, setMovies] = useState([]);
+  const [videos, setvideos] = useState([]);
   const [fetchStatus, setFetchStatus] = useState("idle");
-
-  const posterLayouts = {
-    vertical: {
-      class: `row__posters--vertical object-contain rounded w-100 max-h-[${POSTER_SIZES.vertical}] transition-all duration-500 hover:scale-[1.09]`,
-      imageType: "poster_path",
-    },
-    horizontal: {
-      class: `row__posters--horizontal object-contain rounded  w-100 max-h-[${POSTER_SIZES.horizontal}] transition-all duration-500 hover:scale-[1.11]`,
-      imageType: "backdrop_path",
-    },
-  };
-
-  const updateSelectedTitle = async (movie) => {
-    window.scrollTo(0, 0);
-    setSelectedTitle(movie);
-  };
-
-  const posterLayout = Object.keys(posterLayouts).includes(
-    endpoint?.orientation
-  )
-    ? posterLayouts[endpoint?.orientation]
-    : posterLayouts["horizontal"];
 
   const scrollRow = (event, direction) => {
     const elem = event.currentTarget;
     const scrollContainer = elem.parentElement.querySelector(
-      ".row_posters__scrollable"
+      ".row_cards__scrollable"
     );
 
     if (direction === "left") {
@@ -51,17 +23,18 @@ function Row(props) {
     }
   };
 
+  // Fetch video data from TMDB API
   useEffect(() => {
     if (!endpoint || !endpoint?.url) {
       setFetchStatus("error");
       return;
     }
 
-    instance
+    api
       .get(endpoint.url)
       .then((response) => {
         if (response.data) {
-          setMovies(response.data.results);
+          setvideos(response.data.results);
           setFetchStatus("done");
         }
       })
@@ -71,12 +44,9 @@ function Row(props) {
       });
   }, [endpoint]);
 
-  const boxHeight =
-    (endpoint?.orientation && POSTER_SIZES[endpoint.orientation]) || "156px";
-
   return (
-    <div className="row mb-12 select-none -mx-5">
-      <h2 className="text-white px-5">{endpoint?.title}</h2>
+    <div className="row mb-4 select-none -mx-12">
+      <h2 className="text-white -mb-8 mx-12">{endpoint?.title}</h2>
 
       {fetchStatus === "idle" && (
         <p className="text-white text-center">Loading...</p>
@@ -86,34 +56,23 @@ function Row(props) {
       )}
 
       {fetchStatus === "done" && (
-        <div className="row__posters relative h-full w-full group">
+        <div className="row__cards relative h-full w-full group">
           <MdChevronLeft
             size={35}
             className="bg-white rounded-full opacity-30 absolute top-[50%] translate-y-[-50%] left-0 hover:opacity-100 cursor-pointer z-30 hidden transition-all duration-500 group-hover:block"
             onClick={(event) => scrollRow(event, "left")}
           />
           <div
-            className="relative w-full w-[120%]"
-            style={{ height: boxHeight }}
+            className="relative h-full w-[120%]"
           >
-            <div className="absolute left-0 top-0">
-              <ScrollContainer className="row_posters__scrollable px-5 py-5 overflow-y-hidden overflow-x-visible e w-100 flex flex-row space-x-2 cursor-pointer relative">
-                {movies &&
-                  movies.map((movie) => {
-                    const image = movie[posterLayout.imageType];
-
+            <ScrollContainer draggingClassName="overflow-hidden" className="row_cards__scrollable py-12 px-12 overflow-y-hidden overflow-x-visible w-100 flex flex-row space-x-2 cursor-pointer relative group">
+                {videos &&
+                  videos.map((video, i) => {
                     return (
-                      <img
-                        key={movie.id}
-                        src={image ? basePath + image : null}
-                        alt={movie.name}
-                        className={posterLayout.class}
-                        onClick={() => updateSelectedTitle(movie)}
-                      />
-                    );
+                      <Card video={video} type={type} key={video.id} modals={modals} endpoint={endpoint} setSelectedTitle={setSelectedTitle} />
+                    )
                   })}
               </ScrollContainer>
-            </div>
           </div>
           <MdChevronRight
             size={35}

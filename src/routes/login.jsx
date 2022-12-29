@@ -1,20 +1,17 @@
 import React from "react";
 import Background from "../images/background.png";
 import LoginForm from "../components/LoginForm";
-import SignupForm from "../components/SignupForm";
 import Navbar from "../components/Navbar";
-import Promo from "../components/Promo";
 
-function Landing() {
-  const [loginState, setLoginState] = React.useState("promo");
-
+function Login() {
   return (
     <div
       className="bg-dark h-screen bg-no-repeat bg-cover bg-center"
       style={{ backgroundImage: `url(${Background})` }}
     >
-      <Navbar navclassName="flex items-center justify-between py-6 px-4" setLoginState={setLoginState} />
-      <Promo setLoginState={setLoginState} />
+      <Navbar navStyle="wide"  />
+
+      <LoginForm />
 
       <div className="banner_fadeBottom absolute bottom-0 bg-gradient-to-b h-40 from-transparent via-dark to-dark w-full" />
 
@@ -23,4 +20,4 @@ function Landing() {
   );
 }
 
-export default Landing;
+export default Login;

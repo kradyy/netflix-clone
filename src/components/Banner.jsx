@@ -1,46 +1,41 @@
 import { useEffect, useRef } from "react";
 import { basePath, endpoints } from "../tmdb";
-import instance from "../axios";
+import "react-morphing-modal/dist/ReactMorphingModal.css";
+import api from "../axios";
 
 function Banner({
   selectedTitle,
   setSelectedTitle,
+  modals,
   setActiveMovie,
-  openVideoModal,
 }) {
-  // Open a modal with the trailer on click
-  const triggerRef = useRef(null);
-  const openModal = () =>
-    openVideoModal(triggerRef, {
-      onClose: () => {
-        setActiveMovie(null);
-        //console.log('active movie is unset!', setActiveMovie)
-      },
-      onOpen: () => {
-        setActiveMovie(selectedTitle);
-      },
-    });
-
   // Set a random title as the selected title
   useEffect(() => {
+    if(selectedTitle)
+      return;
+      
     const types = Object.keys(endpoints);
     const randomType =
       endpoints[types[Math.floor(Math.random() * types.length)]];
     const randomGenre =
-      randomType[Math.floor(Math.random() * randomType.length) + 1];
+      randomType[Math.floor(Math.random() * randomType.length)];
 
-    instance.get(randomGenre.url).then((response) => {
+    api.get(randomGenre.url).then((response) => {
       if (response.data) {
         const randomIndex =
           Math.floor(Math.random() * response.data.results.length) + 1;
         setSelectedTitle(response.data.results[randomIndex]);
+      } else {
+        setSelectedTitle(null);
       }
     });
-  }, []);
+  }, [selectedTitle]);
+
+  const { modalProps, getTriggerProps, activeModal } = modals.playVideoModal;
 
   return (
     <header
-      className="banner w-100 md:h-[610px] lg:h-[810px] flex bg-no-repeat bg-cover relative"
+      className="banner w-100 fade-switch md:h-[610px] lg:h-[810px] flex bg-no-repeat bg-cover relative"
       style={{
         backgroundImage: `url(${basePath}${selectedTitle?.backdrop_path})`,
       }}
@@ -64,9 +59,11 @@ function Banner({
             </div>
             <div className="buttons flex space-x-4">
               <button
-                className="buttons__play transition-all duration-500 shadow-sm leading-4 rounded py-3 px-4 font-medium flex items-center space-x-2 bg-white hover:shadow-lg hover:scale-105"
-                ref={triggerRef}
-                onClick={openModal}
+                className="buttons__play transition-all duration-500 shadow-sm leading-4 rounded py-3 px-4 font-medium flex items-center space-x-2 bg-white hover:shadow-lg hover:bg-opacity-80"
+                {...getTriggerProps({
+                  onOpen: () => setActiveMovie(selectedTitle),
+                  onClose: () => setActiveMovie(null),
+                })}
               >
                 <svg
                   width="9"
@@ -84,7 +81,7 @@ function Banner({
                 <span>Play</span>
               </button>
 
-              <button className="buttons__more-info buttons__play transition-all duration-500 shadow-sm leading-4 rounded py-3 px-4 font-medium flex items-center space-x-2 text-white bg-white bg-opacity-50 hover:shadow-lg hover:scale-105">
+              <button className="buttons__more-info buttons__play transition-all duration-500 shadow-sm leading-4 rounded py-3 px-4 font-medium flex items-center space-x-2 text-white bg-white bg-opacity-50 hover:shadow-lg hover:bg-opacity-40">
                 <svg
                   width="17"
                   height="17"

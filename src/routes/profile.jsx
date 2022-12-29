@@ -5,15 +5,11 @@ import { selectUser } from "../features/userSlice";
 import { useSelector } from "react-redux";
 
 function Profile() {
-    const user = useSelector(selectUser);
-    
-    // setDock = Kunna spara shows i min lista
-    // Kunna hovra över för att se mer info om showen + lägga till fler parametrar
-    // Stripe ska ej göras i denna, vänta med det
-
+  const user = useSelector(selectUser);
+  
   return (
-    <div className="relative h-full">
-      <Navbar navStyle="wide" hideMenu={true} />
+    <div className="relative h-screen">
+      <Navbar navclassName="flex items-center justify-between py-6 px-4" hideMenu={true} />
 
       <div className="profile flex w-full h-full items-center content-center">
         <div className="profile__container container max-w-[750px] text-white">
@@ -33,6 +29,7 @@ function Profile() {
                 type="text"
                 className="p-3 bg-light-gray w-full text-white"
                 value={user && user.email}
+                disabled
               />
 
               <h3 className="plans__title mt-3 font-medium text-md">Plans (Current Plan: Premium)</h3>

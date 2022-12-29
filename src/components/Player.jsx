@@ -5,7 +5,9 @@ import { Modal } from "react-morphing-modal";
 import { LineWave } from "react-loader-spinner";
 import "react-morphing-modal/dist/ReactMorphingModal.css";
 
-export default function Player({ modalProps, activeMovie }) {
+export default function Player({ modal, activeMovie }) {
+  const { modalProps } = modal;
+
   const [trailerID, setTrailerID] = React.useState("");
   const [playerState, setPlayerState] = React.useState("");
 
@@ -58,7 +60,7 @@ export default function Player({ modalProps, activeMovie }) {
                 color="#e50914"
                 ariaLabel="line-wave"
                 wrapperStyle={{}}
-                wrapperClass=""
+                wrapperclassName=""
                 visible={true}
                 firstLineColor=""
                 middleLineColor=""
