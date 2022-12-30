@@ -5,7 +5,7 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 function Row(props) {
-  const { endpoint, setSelectedTitle, type, modals } = props;
+  const { endpoint, selectedTitleState, videoType, modals } = props;
 
   const [videos, setvideos] = useState([]);
   const [fetchStatus, setFetchStatus] = useState("idle");
@@ -66,13 +66,13 @@ function Row(props) {
             className="relative h-full w-[120%]"
           >
             <ScrollContainer draggingClassName="overflow-hidden" className="row_cards__scrollable py-12 px-12 overflow-y-hidden overflow-x-visible w-100 flex flex-row space-x-2 cursor-pointer relative group">
-                {videos &&
-                  videos.map((video, i) => {
-                    return (
-                      <Card video={video} type={type} key={video.id} modals={modals} endpoint={endpoint} setSelectedTitle={setSelectedTitle} />
-                    )
-                  })}
-              </ScrollContainer>
+              {videos &&
+                videos.map((video, i) => {
+                  return (
+                    <Card video={video} videoType={videoType} key={video.id} modals={modals} endpoint={endpoint} selectedTitleState={selectedTitleState} />
+                  )
+                })}
+            </ScrollContainer>
           </div>
           <MdChevronRight
             size={35}

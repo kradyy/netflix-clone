@@ -1,19 +1,17 @@
 import { useEffect, useRef } from "react";
 import { basePath, endpoints } from "../tmdb";
-import "react-morphing-modal/dist/ReactMorphingModal.css";
 import api from "../axios";
 
-function Banner({
-  selectedTitle,
-  setSelectedTitle,
-  modals,
-  setActiveMovie,
-}) {
+function Banner({ selectedTitleState, modals, videoType }) {
+  const [playVideoModal, setplayVideoModal] = modals.playVideoModal;
+  const [informationModalModal, setInformationModal] = modals.informationModal;
+
+  const [selectedTitle, setSelectedTitle] = selectedTitleState;
+
   // Set a random title as the selected title
   useEffect(() => {
-    if(selectedTitle)
-      return;
-      
+    if (selectedTitle) return;
+
     const types = Object.keys(endpoints);
     const randomType =
       endpoints[types[Math.floor(Math.random() * types.length)]];
@@ -30,8 +28,6 @@ function Banner({
       }
     });
   }, [selectedTitle]);
-
-  const { modalProps, getTriggerProps, activeModal } = modals.playVideoModal;
 
   return (
     <header
@@ -60,10 +56,9 @@ function Banner({
             <div className="buttons flex space-x-4">
               <button
                 className="buttons__play transition-all duration-500 shadow-sm leading-4 rounded py-3 px-4 font-medium flex items-center space-x-2 bg-white hover:shadow-lg hover:bg-opacity-80"
-                {...getTriggerProps({
-                  onOpen: () => setActiveMovie(selectedTitle),
-                  onClose: () => setActiveMovie(null),
-                })}
+                onClick={() => {
+                  setplayVideoModal({ activeVideo: selectedTitle, isOpen: true });
+                }}
               >
                 <svg
                   width="9"
@@ -81,7 +76,11 @@ function Banner({
                 <span>Play</span>
               </button>
 
-              <button className="buttons__more-info buttons__play transition-all duration-500 shadow-sm leading-4 rounded py-3 px-4 font-medium flex items-center space-x-2 text-white bg-white bg-opacity-50 hover:shadow-lg hover:bg-opacity-40">
+              <button className="buttons__more-info buttons__play transition-all duration-500 shadow-sm leading-4 rounded py-3 px-4 font-medium flex items-center space-x-2 text-white bg-white bg-opacity-50 hover:shadow-lg hover:bg-opacity-40"
+                onClick={() => {
+                  setInformationModal({ activeVideo: selectedTitle, isOpen: true, videoType: videoType });
+                }}
+              >
                 <svg
                   width="17"
                   height="17"
